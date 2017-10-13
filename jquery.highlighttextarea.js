@@ -65,14 +65,13 @@
             that = this;
         	that.spacer = '';
         	if (this.settings.wordsOnly ) {
-        		that.spacer = '\\b';
+        		that.spacer = '(^|\\s|$)';
         	}
         	
         $.each(this.settings.words, function(color, words) {
-            text = text.replace(
-                new RegExp(that.spacer+'('+ words.join('|') +')'+that.spacer, that.regParam),
-                '<mark style="background-color:'+ color +';">$1</mark>'
-            );
+            var regexp = new RegExp(that.spacer+'('+ words.join('|') +')'+that.spacer, that.regParam);
+            var highlighted = '$1<mark style="background-color:'+ color +';">$2</mark>$3';
+            text = text.replace(regexp, highlighted).replace(regexp, highlighted);
         });
 
         $.each(this.settings.ranges, function(i, range) {
